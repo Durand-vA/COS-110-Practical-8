@@ -97,12 +97,14 @@ int SinglyList<T>::remove(T data) {
     Node<T>* prev = NULL;
 
     bool found = false;
+    int count = 0;
     while (!found && ptr) {
         if (*ptr == data) {
             found = true;
         } else {
             prev = ptr;
             ptr = ptr->next;
+            count++;
         }
     }
     if (found) {
@@ -115,6 +117,7 @@ int SinglyList<T>::remove(T data) {
     } else {
         return -1;
     }
+    return count;
 }
 
 template<class T>
@@ -132,12 +135,7 @@ Node<T>* SinglyList<T>::operator[](int index) const {
             return NULL;
         }
     } else {
-        int count = 0;
-        Node<T>* ptr = this->head;
-        while (ptr) {
-            ptr = ptr->next;
-            count++;
-        }
+        int count = this->size();
         if (count + index < 0) {
             return NULL;
         } else {
@@ -197,22 +195,102 @@ int SinglyList<T>::getIndexFromRear(T data) const {
 
 template<class T>
 List<T>* SinglyList<T>::sort(bool order) const {
-    return nullptr;
+    SinglyList<T>* sorted = new SinglyList<T>;
+    SinglyList<T>* copy = new SinglyList<T>;
+
+    Node<T>* ptr = this->head;
+    int count = 1;
+    while (ptr) {
+        copy->insert(ptr->getData(), count++);
+        ptr = ptr->next;
+    }
+
+    while (copy->head) {
+        Node<T>* p = copy->head;
+        T element;
+        if (p)
+            element = p->getData();
+        Node<T>* elementToExtract = p;
+        Node<T>* bForeExtract = NULL;
+        Node<T>* prev = NULL;
+        while (p) {
+            if (order) {
+                if (p->getData() > element) {
+                    element = p->getData();
+                    bForeExtract = prev;
+                    elementToExtract = p;
+                }
+            } else {
+                if (p->getData() < element) {
+                    element = p->getData();
+                    bForeExtract = prev;
+                    elementToExtract = p;
+                }
+            }
+            prev = p;
+            p = p->next;
+        }
+
+        sorted->insert(elementToExtract->getData(), 0);
+        if (bForeExtract) {
+            bForeExtract->next = elementToExtract->next;
+        } else {
+            copy->head = elementToExtract->next;
+        }
+        delete elementToExtract;
+    }
+
+    delete copy;
+
+    return sorted;
 }
 
 template<class T>
 Node<T>* SinglyList<T>::findSmallest() const {
-    return nullptr;
+    Node<T>* ptr = this->head;
+    Node<T>* out = ptr;
+    T element;
+    if (ptr)
+        element = ptr->getData();
+    while (ptr) {
+        if (ptr->getData() < element) {
+            element = ptr->getData();
+            out = ptr;
+        }
+        ptr = ptr->next;
+    }
+
+    return out;
 }
 
 template<class T>
 Node<T>* SinglyList<T>::findBiggest() const {
-    return nullptr;
+    Node<T>* ptr = this->head;
+    Node<T>* out = ptr;
+    T element = ptr->getData();
+    while (ptr) {
+        if (ptr->getData() > element) {
+            element = ptr->getData();
+            out = ptr;
+        }
+        ptr = ptr->next;
+    }
+
+    return out;
 }
 
 template<class T>
 List<T>* SinglyList<T>::clone() const {
-    return nullptr;
+    SinglyList<T>* copy = new SinglyList<T>;
+
+    Node<T>* ptr = this->head;
+    int count = 1;
+    while (ptr) {
+        copy->insert(ptr->getData(), count++);
+        ptr = ptr->next;
+    }
+
+    return copy;
 }
 
 #endif /*SinglyList_CPP*/

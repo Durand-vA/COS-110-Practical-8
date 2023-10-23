@@ -10,7 +10,12 @@ List<T>::List() {
 
 template<class T>
 List<T>::~List() {
-
+//    Node<T>* ptr = this->head;
+//    while (ptr) {
+//        Node<T>* prev = ptr;
+//        ptr = ptr->next;
+//        delete prev;
+//    }
 }
 
 template<class T>

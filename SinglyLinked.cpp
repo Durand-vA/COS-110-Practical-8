@@ -146,21 +146,18 @@ Node<T>* SinglyList<T>::operator[](int index) const {
 
 template<class T>
 Node<T>* SinglyList<T>::operator()(T* dataPtr) const {
+    if (!dataPtr)
+        return NULL;
     Node<T>* ptr = this->head;
-    bool found = false;
-    while (!found && ptr) {
+    while (ptr) {
         if (*ptr == *dataPtr) {
-            found = true;
-        }else {
-            ptr = ptr->next;
+            return ptr;
         }
+        ptr = ptr->next;
     }
 
-    if (found) {
-        return ptr;
-    } else {
-        return NULL;
-    }
+    return NULL;
+
 }
 
 template<class T>
